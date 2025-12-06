@@ -6,6 +6,11 @@
 
 A full-stack AI-driven product recommendation system that analyzes user behavior and preferences to generate **personalized product suggestions**, complete with **LLM explanations**, confidence scores, and an **admin analytics dashboard**.
 
+## 🎥 Demo Video  
+Watch the full demo here:  
+👉 https://youtu.be/wrKyblr9aZs
+
+
 ---
 
 ## 📌 Table of Contents
