@@ -1,73 +1,164 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: "./.env" });   
+// import dotenv from 'dotenv';
+// dotenv.config({ path: "./.env" });   
+// dotenv.config();
+// import express from "express"
+// import cors from "cors"
+// import mongoose from "mongoose"
+// import config from "./config.js"
+// import productRoutes from "./routes/products.js"
+// import userRoutes from "./routes/users.js"
+// import eventRoutes from "./routes/events.js"
+// import recommendRoutes from "./routes/recommend.js"
+// import feedbackRoutes from "./routes/feedback.js"
+// import { seedDatabase } from "./seed/seed.js";
+//  // if you want default, tell me & I’ll modify export
+
+
+
+// const app = express()
+
+// // Middleware
+// app.use(cors({ origin: config.corsOrigin }))
+// app.use(express.json())
+
+// // Database connection
+
+
+// mongoose
+//   .connect(config.mongoUri)
+//   .then(() => console.log("MongoDB connected"))
+//   .catch((err) => console.error("MongoDB connection error:", err))
+
+// // Health check
+// app.get("/api/health", (req, res) => {
+//   res.json({ status: "OK", timestamp: new Date() })
+// })
+
+
+
+// app.get("/api/seed", async (req, res) => {
+//   try {
+//     await seedDatabase();
+//     res.send("Database seeded successfully!");
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send("Seeding failed");
+//   }
+// });
+
+
+// // Routes
+// app.use("/api/products", productRoutes)
+// app.use("/api/users", userRoutes)
+// app.use("/api/events", eventRoutes)
+// app.use("/api/recommend", recommendRoutes)
+// app.use("/api/feedback", feedbackRoutes)
+
+// // 404 handler
+// app.use((req, res) => {
+//   res.status(404).json({ error: "Route not found" })
+// })
+
+// // Error handling middleware
+// app.use((err, req, res, next) => {
+//   console.error(err)
+//   res.status(err.status || 500).json({
+//     error: err.message || "Internal server error",
+//   })
+// })
+
+// app.listen(config.port, () => {
+//   console.log(`Server running on port ${config.port}`)
+//   console.log(`Environment: ${config.nodeEnv}`)
+// })
+
+import dotenv from "dotenv";
+dotenv.config({ path: "./.env" });   // Load env
 dotenv.config();
-import express from "express"
-import cors from "cors"
-import mongoose from "mongoose"
-import config from "./config.js"
-import productRoutes from "./routes/products.js"
-import userRoutes from "./routes/users.js"
-import eventRoutes from "./routes/events.js"
-import recommendRoutes from "./routes/recommend.js"
-import feedbackRoutes from "./routes/feedback.js"
-import { seedDatabase } from "./seed/seed.js";
- // if you want default, tell me & I’ll modify export
+
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+
+import config from "./config.js";
+
+import productRoutes from "./routes/products.js";
+import userRoutes from "./routes/users.js";
+import eventRoutes from "./routes/events.js";
+import recommendRoutes from "./routes/recommend.js";
+import feedbackRoutes from "./routes/feedback.js";
+
+import seedDatabase from "./seed/seed.js"; // <-- ensure seed.js exports default
 
 
-
-const app = express()
+const app = express();
 
 // Middleware
-app.use(cors({ origin: config.corsOrigin }))
-app.use(express.json())
+app.use(cors({ origin: config.corsOrigin }));
+app.use(express.json());
 
-// Database connection
-
-
+// MongoDB Connection
 mongoose
   .connect(config.mongoUri)
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error:", err))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-// Health check
+
+// ---------------------------------------------------------------------------
+// ✅ HEALTH CHECK
+// ---------------------------------------------------------------------------
 app.get("/api/health", (req, res) => {
-  res.json({ status: "OK", timestamp: new Date() })
-})
+  res.json({ status: "OK", timestamp: new Date() });
+});
 
 
-
+// ---------------------------------------------------------------------------
+// ✅ MANUAL SEED ROUTE (Run once, manually)
+// ---------------------------------------------------------------------------
 app.get("/api/seed", async (req, res) => {
   try {
-    await seedDatabase();
-    res.send("Database seeded successfully!");
+    console.log("Running database seed...");
+    await seedDatabase();     // <-- runs your seed.js script
+    return res.send("Database seeded successfully!");
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Seeding failed");
+    console.error("Seeding error:", err);
+    return res.status(500).send("Seeding failed.");
   }
 });
 
 
-// Routes
-app.use("/api/products", productRoutes)
-app.use("/api/users", userRoutes)
-app.use("/api/events", eventRoutes)
-app.use("/api/recommend", recommendRoutes)
-app.use("/api/feedback", feedbackRoutes)
+// ---------------------------------------------------------------------------
+// API ROUTES
+// ---------------------------------------------------------------------------
+app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/recommend", recommendRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
-// 404 handler
+
+// ---------------------------------------------------------------------------
+// 404 HANDLER
+// ---------------------------------------------------------------------------
 app.use((req, res) => {
-  res.status(404).json({ error: "Route not found" })
-})
+  res.status(404).json({ error: "Route not found" });
+});
 
-// Error handling middleware
+// ---------------------------------------------------------------------------
+// ERROR HANDLING
+// ---------------------------------------------------------------------------
 app.use((err, req, res, next) => {
-  console.error(err)
+  console.error(err);
   res.status(err.status || 500).json({
     error: err.message || "Internal server error",
-  })
-})
+  });
+});
 
+
+// ---------------------------------------------------------------------------
+// START SERVER
+// ---------------------------------------------------------------------------
 app.listen(config.port, () => {
-  console.log(`Server running on port ${config.port}`)
-  console.log(`Environment: ${config.nodeEnv}`)
-})
+  console.log(`Server running on port ${config.port}`);
+  console.log(`Environment: ${config.nodeEnv}`);
+});
