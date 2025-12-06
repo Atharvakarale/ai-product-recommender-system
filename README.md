@@ -6,7 +6,6 @@ You can **copy–paste directly** into your GitHub repo. 🚀
 # 🚀 AI-Powered E-Commerce Product Recommender System
 
 **🌐 Live Demo:** [https://ai-product-recommender-system.vercel.app](https://ai-product-recommender-system.vercel.app)
-**👑 Admin Panel:** [https://ai-product-recommender-system.vercel.app/admin](https://ai-product-recommender-system.vercel.app/admin)
 
 A full-stack AI-driven product recommendation system that analyzes user behavior and preferences to generate **personalized product suggestions**, complete with **LLM explanations**, confidence scores, and an **admin analytics dashboard**.
 
@@ -15,7 +14,6 @@ A full-stack AI-driven product recommendation system that analyzes user behavior
 ## 📌 Table of Contents
 
 * [Overview](#overview)
-* [Live Deployments](#live-deployments)
 * [Architecture](#architecture)
 * [Tech Stack](#tech-stack)
 * [Features](#features)
@@ -31,15 +29,6 @@ A full-stack AI-driven product recommendation system that analyzes user behavior
 
 ---
 
-# 🌐 Live Deployments
-
-| Component                | URL                                                                                                                                    |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| **Frontend (User App)**  | [https://ai-product-recommender-system.vercel.app](https://ai-product-recommender-system.vercel.app)                                   |
-| **Admin Panel**          | [https://ai-product-recommender-system.vercel.app/admin](https://ai-product-recommender-system.vercel.app/admin)                       |
-| **Seed Endpoint**        | [https://thorough-patience-production-c9fa.up.railway.app/api/seed](https://thorough-patience-production-c9fa.up.railway.app/api/seed) |
-
----
 
 # 📘 Overview
 

@@ -961,10 +961,47 @@ async function seedDatabase() {
   console.log(`Seeded ${users.length} users`);
 
   // EVENTS
-  const events = [];
+   const events = [];
 
-  // (same event logic...)
-  // [Kept unchanged]
+  // Tech
+  events.push(
+    { userId: users[0]._id, productId: products[0]._id, eventType: "view" },
+    { userId: users[0]._id, productId: products[0]._id, eventType: "cart" },
+    { userId: users[0]._id, productId: products[2]._id, eventType: "view" },
+    { userId: users[0]._id, productId: products[2]._id, eventType: "purchase" },
+  );
+
+  // Fashion
+  events.push(
+    { userId: users[1]._id, productId: products[3]._id, eventType: "view" },
+    { userId: users[1]._id, productId: products[4]._id, eventType: "view" },
+    { userId: users[1]._id, productId: products[5]._id, eventType: "cart" },
+    { userId: users[1]._id, productId: products[5]._id, eventType: "purchase" },
+  );
+
+  // Home Chef
+  events.push(
+    { userId: users[2]._id, productId: products[6]._id, eventType: "view" },
+    { userId: users[2]._id, productId: products[8]._id, eventType: "view" },
+    { userId: users[2]._id, productId: products[6]._id, eventType: "purchase" },
+    { userId: users[2]._id, productId: products[4]._id, eventType: "view" },
+  );
+
+  // Fitness
+  events.push(
+    { userId: users[3]._id, productId: products[9]._id, eventType: "view" },
+    { userId: users[3]._id, productId: products[10]._id, eventType: "view" },
+    { userId: users[3]._id, productId: products[11]._id, eventType: "view" },
+    { userId: users[3]._id, productId: products[9]._id, eventType: "purchase" },
+  );
+
+  // All-rounder
+  events.push(
+    { userId: users[4]._id, productId: products[1]._id, eventType: "view" },
+    { userId: users[4]._id, productId: products[5]._id, eventType: "view" },
+    { userId: users[4]._id, productId: products[8]._id, eventType: "view" },
+    { userId: users[4]._id, productId: products[9]._id, eventType: "cart" },
+  );
 
   await Event.insertMany(events);
 
