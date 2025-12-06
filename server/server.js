@@ -75,45 +75,30 @@
 // server.js
 import "dotenv/config";
 import express from "express";
-import cors from "cors";
 import mongoose from "mongoose";
 
-import config from "./config.js";
-
+// Routes
 import productRoutes from "./routes/products.js";
 import userRoutes from "./routes/users.js";
 import eventRoutes from "./routes/events.js";
 import recommendRoutes from "./routes/recommend.js";
 import feedbackRoutes from "./routes/feedback.js";
 
-import seedDatabase from "./seed/seed.js"; // default export
-
+import seedDatabase from "./seed/seed.js";
+import config from "./config.js";
 
 const app = express();
 
 // -----------------------------------------------------------
-// CORS SETUP (Smart handling based on config)
+// 🔥 UNIVERSAL CORS FIX — WORKS FOR VERCEL, RAILWAY, LOCAL
 // -----------------------------------------------------------
-let corsOptions = {};
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // Allow ALL origins
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
-if (config.corsAllowAny) {
-  // Allow any origin (NO credentials allowed!)
-  corsOptions = {
-    origin: "*",
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
-  };
-} else {
-  // Allow only specific origins
-  corsOptions = {
-    origin: config.corsOrigins,
-    credentials: true,
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
-  };
-}
-
-console.log("CORS configuration:", corsOptions);
-
-app.use(cors(corsOptions));
 app.use(express.json());
 
 // -----------------------------------------------------------
@@ -122,28 +107,26 @@ app.use(express.json());
 mongoose
   .connect(config.mongoUri)
   .then(() => console.log("MongoDB connected"))
-  .catch((err) =>
-    console.error("MongoDB connection error:", err.message)
-  );
+  .catch((err) => console.error("MongoDB connection error:", err.message));
 
 // -----------------------------------------------------------
-// HEALTH CHECK ROUTE
+// HEALTH CHECK
 // -----------------------------------------------------------
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date() });
 });
 
 // -----------------------------------------------------------
-// MANUAL SEEDING ROUTE
+// RUN SEEDER (manual)
 // -----------------------------------------------------------
 app.get("/api/seed", async (req, res) => {
   try {
     console.log("Running database seed...");
     await seedDatabase();
-    return res.send("Database seeded successfully!");
+    res.send("Database seeded successfully!");
   } catch (err) {
     console.error("Seeding error:", err);
-    return res.status(500).send("Seeding failed.");
+    res.status(500).send("Seeding failed.");
   }
 });
 
@@ -164,7 +147,7 @@ app.use((req, res) => {
 });
 
 // -----------------------------------------------------------
-// ERROR MIDDLEWARE
+// GLOBAL ERROR HANDLER
 // -----------------------------------------------------------
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err);
