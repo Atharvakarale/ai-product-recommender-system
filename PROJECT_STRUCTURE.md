@@ -1,54 +1,60 @@
-# Project Structure
 
-## Directory Layout
 
-\`\`\`
+# 📁 Project Structure
+
+This document explains the complete folder and file structure of the **AI-Powered E-Commerce Product Recommender System**, covering both **frontend (React + Vite)** and **backend (Node.js + Express)**.
+
+---
+
+## 🗂 Directory Layout
+
+```
 recommender-system/
-├── server/                          # Backend (Express.js)
+├── server/                          # Backend (Express.js + MongoDB)
 │   ├── models/
 │   │   ├── User.js                 # User profile schema
 │   │   ├── Product.js              # Product catalog schema
-│   │   ├── Event.js                # User behavior events
-│   │   ├── RecommendationLog.js    # Recommendation records
-│   │   └── Feedback.js             # User feedback on recommendations
+│   │   ├── Event.js                # User behavior tracking
+│   │   ├── RecommendationLog.js    # Recommendation scoring + LLM logs
+│   │   └── Feedback.js             # Feedback on recommendations
 │   ├── routes/
-│   │   ├── products.js             # Product endpoints
-│   │   ├── users.js                # User endpoints
-│   │   ├── events.js               # Event tracking endpoints
-│   │   ├── recommend.js            # Recommendation endpoints
-│   │   └── feedback.js             # Feedback endpoints
+│   │   ├── products.js             # CRUD for products
+│   │   ├── users.js                # User APIs
+│   │   ├── events.js               # Event tracking APIs
+│   │   ├── recommend.js            # Recommendation endpoint
+│   │   └── feedback.js             # Feedback submission + stats
 │   ├── services/
-│   │   ├── RecommendationEngine.js # Core recommendation logic
+│   │   ├── RecommendationEngine.js # Weighted recommendation algorithm
 │   │   └── LLMService.js           # LLM explanation generation
 │   ├── seed/
 │   │   └── seed.js                 # Database seeding script
-│   ├── config.js                   # Configuration management
+│   ├── config.js                   # Environment + configuration
 │   ├── server.js                   # Express server entry point
 │   ├── package.json
 │   └── .env.example
 │
-├── client/                          # Frontend (React + Vite)
+├── client/                         # Frontend (React + Vite)
 │   ├── src/
 │   │   ├── pages/
-│   │   │   ├── UserSelect.jsx      # User selection page
-│   │   │   ├── Dashboard.jsx       # Main recommendations page
-│   │   │   ├── Admin.jsx           # Analytics dashboard
+│   │   │   ├── UserSelect.jsx      # User profile selection page
+│   │   │   ├── Dashboard.jsx       # Personalized recommendations
+│   │   │   ├── Admin.jsx           # Admin analytics dashboard
 │   │   │   └── NotFound.jsx        # 404 page
 │   │   ├── components/
 │   │   │   ├── ProductCard.jsx     # Product display card
-│   │   │   ├── ExplanationCard.jsx # AI explanation display
-│   │   │   ├── FeedbackButtons.jsx # Feedback submission
-│   │   │   ├── RecommendationList.jsx # Recommendations container
-│   │   │   ├── LoadingSpinner.jsx  # Loading indicator
-│   │   │   ├── ErrorMessage.jsx    # Error display
+│   │   │   ├── ExplanationCard.jsx # LLM explanation + confidence tag
+│   │   │   ├── FeedbackButtons.jsx # Feedback submission UI
+│   │   │   ├── RecommendationList.jsx # Renders all recommendations
+│   │   │   ├── LoadingSpinner.jsx  # Global loader
+│   │   │   ├── ErrorMessage.jsx    # Error UI
 │   │   │   └── Charts/
 │   │   │       ├── EventChart.jsx  # Event distribution chart
 │   │   │       └── FeedbackChart.jsx # Feedback pie chart
 │   │   ├── utils/
-│   │   │   └── api.js              # Axios API client
+│   │   │   └── api.js              # Axios Client (All API calls)
 │   │   ├── main.jsx                # React entry point
 │   │   ├── index.css               # Global styles
-│   │   └── App.jsx                 # Root component
+│   │   └── App.jsx                 # App router + layout
 │   ├── index.html
 │   ├── vite.config.js
 │   ├── tailwind.config.js
@@ -56,130 +62,169 @@ recommender-system/
 │   ├── package.json
 │   └── .env.example
 │
-├── .env.setup.md                   # Environment setup guide
-├── PROJECT_STRUCTURE.md            # This file
-└── README.md                        # Main project documentation
-\`\`\`
+├── .env.setup.md                   # Guide for setting up environment variables
+├── PROJECT_STRUCTURE.md            # (This file)
+└── README.md                       # Main project documentation
+```
 
-## Key Files Explanation
+---
 
-### Backend Files
+# 🔍 Key Modules Overview
 
-#### Models (`server/models/`)
-- **User.js**: Stores user profiles, preferences, and price ranges
-- **Product.js**: Product catalog with ratings and popularity scores
-- **Event.js**: Tracks user interactions (views, cart adds, purchases)
-- **RecommendationLog.js**: Records all recommendations with scores and explanations
-- **Feedback.js**: Stores user feedback on recommendations
+## 🛠 Backend (`server/`)
 
-#### Routes (`server/routes/`)
-- **products.js**: GET all/single product, POST new product
-- **users.js**: GET all/single user, POST new user, PATCH user preferences
-- **events.js**: POST event, GET events, analytics distribution
-- **recommend.js**: GET recommendations for a user
-- **feedback.js**: POST feedback, GET feedback statistics
+### **Models**
 
-#### Services (`server/services/`)
-- **RecommendationEngine.js**: Implements the weighted scoring algorithm
-- **LLMService.js**: Generates natural language explanations for recommendations
+| Model                    | Description                                         |
+| ------------------------ | --------------------------------------------------- |
+| **User.js**              | User preferences, price ranges, browsing categories |
+| **Product.js**           | Product catalog with rating, popularity, image      |
+| **Event.js**             | Tracks views, cart actions, purchases               |
+| **RecommendationLog.js** | Stores scores + LLM explanations                    |
+| **Feedback.js**          | Stores “Relevant/Not Relevant/Skip” feedback        |
 
-### Frontend Files
+### **Routes**
 
-#### Pages (`client/src/pages/`)
-- **UserSelect.jsx**: Initial page for user selection
-- **Dashboard.jsx**: Main page showing personalized recommendations
-- **Admin.jsx**: Analytics dashboard with charts
-- **NotFound.jsx**: 404 error page
+* `/products` → Get/Add products
+* `/users` → Get users + update preferences
+* `/events` → Log/view events + distribution analytics
+* `/recommend/:userId` → Generate recommendations
+* `/feedback` → Submit + retrieve feedback statistics
 
-#### Components (`client/src/components/`)
-- **ProductCard.jsx**: Displays product information
-- **ExplanationCard.jsx**: Shows AI explanation and confidence
-- **FeedbackButtons.jsx**: Allows users to rate recommendations
-- **RecommendationList.jsx**: Maps and displays all recommendations
-- **LoadingSpinner.jsx**: Loading state indicator
-- **ErrorMessage.jsx**: Error state display
-- **Charts/**: Recharts visualization components
+### **Services**
 
-#### Utilities (`client/src/utils/`)
-- **api.js**: Axios client with all API methods
+* **RecommendationEngine.js**
+  Implements the weighted scoring algorithm:
 
-## Data Flow
+  ```
+  Score = 0.4*Category + 0.3*Behavior + 0.2*Popularity + 0.1*Recency
+  ```
 
-\`\`\`
-User selects profile
-    ↓
-Frontend fetches user recommendations
-    ↓
-Backend calls RecommendationEngine
-    ↓
-Engine calculates scores for all products
-    ↓
-LLMService generates explanations
-    ↓
-Results saved to RecommendationLog
-    ↓
-Frontend displays recommendations
-    ↓
-User provides feedback
-    ↓
-Backend saves feedback to database
-\`\`\`
+* **LLMService.js**
+  Generates natural-language explanations (OpenAI or mock).
 
-## Recommendation Algorithm Flow
+---
 
-\`\`\`
-1. Fetch user profile (categories, price range)
-2. Fetch user behavior (view, cart, purchase events)
-3. Fetch candidate products (not yet viewed, in price range)
-4. For each product, calculate:
-   - Category similarity (40%)
-   - Behavior score (30%)
-   - Popularity score (20%)
-   - Recency score (10%)
-5. Rank products by total score
-6. Generate LLM explanations for top 10
-7. Save to database and return to frontend
-\`\`\`
+## 🎨 Frontend (`client/`)
 
-## Technology Stack
+### Pages
+
+* **UserSelect** → Choose user & start recommendation flow
+* **Dashboard** → Main recommendations view
+* **Admin** → Analytics dashboard
+* **NotFound** → 404 fallback
+
+### Components
+
+* **ProductCard** → Product display UI
+* **ExplanationCard** → Shows AI explanation + confidence
+* **FeedbackButtons** → Records user feedback
+* **RecommendationList** → Lists all recommendations
+* **Charts** (Recharts):
+
+  * Event distribution
+  * Feedback pie chart
+
+### Utilities
+
+* **api.js** → Centralized Axios client for all API calls
+
+---
+
+# 🔄 Data Flow Overview
+
+```
+User Selects Profile
+        ↓
+Dashboard Requests Recommendations
+        ↓
+Backend → RecommendationEngine Calculates Score
+        ↓
+LLMService Generates Explanation
+        ↓
+Results Logged in RecommendationLog
+        ↓
+Frontend Displays Products + Explanations
+        ↓
+User Reacts (Relevant / Not Relevant / Skip)
+        ↓
+Feedback Stored in Feedback Collection
+        ↓
+Admin Dashboard Updates Analytics in Real-Time
+```
+
+---
+
+# 🧠 Recommendation Algorithm Flow
+
+```
+1. Load user profile (categories, price range)
+2. Load user's past behavior events
+3. Filter all available products
+4. For each product, compute:
+     - Category similarity (0.4)
+     - Behavioral affinity (0.3)
+     - Popularity score (0.2)
+     - Recency score (0.1)
+5. Rank products by final weighted score
+6. Generate explanation (LLM)
+7. Save recommendation record
+8. Return ranked list to frontend
+```
+
+---
+
+# 🧰 Technology Stack
+
+### **Backend**
+
+* Node.js
+* Express.js
+* MongoDB (Mongoose)
+* OpenAI API (optional)
+* CORS
+
+### **Frontend**
+
+* React 18
+* Vite
+* TailwindCSS 4
+* Recharts
+* Lucide React icons
+* Axios
+
+### **Developer Tools**
+
+* ESLint
+* Prettier
+* Nodemon
+
+---
+
+# 🚀 Setup Instructions
+
+For full setup, see `.env.setup.md`.
+
+## Quick Start
 
 ### Backend
-- **Express.js** - Web framework
-- **MongoDB** - NoSQL database
-- **Mongoose** - ODM for MongoDB
-- **CORS** - Cross-origin request handling
-- **Node.js** - Runtime
 
-### Frontend
-- **React 18** - UI framework
-- **Vite** - Build tool
-- **TailwindCSS** - Styling
-- **React Router** - Navigation
-- **Axios** - HTTP client
-- **Recharts** - Data visualization
-- **Lucide React** - Icons
-
-### Tools
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
-- **Nodemon** - Auto-reload for development
-
-## Setup Instructions
-
-See `.env.setup.md` for detailed environment configuration.
-
-Quick start:
-\`\`\`bash
-# Backend
+```bash
 cd server
 npm install
-npm run seed
+node seed/seed.js
 npm run dev
+```
 
-# Frontend (in new terminal)
+### Frontend
+
+```bash
 cd client
 npm install
 npm run dev
-\`\`\`
+```
 
-Visit `http://localhost:5173` to access the application.
+Visit:
+👉 **[http://localhost:5173](http://localhost:5173)**
+
+
