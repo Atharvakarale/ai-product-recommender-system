@@ -1,7 +1,5 @@
 
 
----
-
 # 🚀 AI-Powered E-Commerce Product Recommender System
 
 A full-stack AI-driven product recommendation system that analyzes user behavior and preferences to generate **personalized product suggestions**, complete with **LLM explanations**, confidence scores, and an **admin analytics dashboard**.
@@ -150,8 +148,6 @@ Total Score = 0.4 × Category Similarity
 
 # 🖼 Screenshots
 
-> Add your screenshots here once ready
-> For example:
 
 * User selection page
 ![alt text](<Screenshot 2025-12-06 125624.png>)
