@@ -1,7 +1,4 @@
-Here is your **updated README.md** with **deployment links added in the perfect places** while keeping everything else exactly the same.
-You can **copy–paste directly** into your GitHub repo. 🚀
 
----
 
 # 🚀 AI-Powered E-Commerce Product Recommender System
 
