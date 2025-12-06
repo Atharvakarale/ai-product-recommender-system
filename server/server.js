@@ -10,6 +10,9 @@ import userRoutes from "./routes/users.js"
 import eventRoutes from "./routes/events.js"
 import recommendRoutes from "./routes/recommend.js"
 import feedbackRoutes from "./routes/feedback.js"
+import { seedDatabase } from "./seed/seed.js";
+ // if you want default, tell me & I’ll modify export
+
 
 
 const app = express()
@@ -19,7 +22,7 @@ app.use(cors({ origin: config.corsOrigin }))
 app.use(express.json())
 
 // Database connection
-console.log('MONGO_URI from env:', process.env.MONGO_URI);
+
 
 mongoose
   .connect(config.mongoUri)
@@ -30,6 +33,19 @@ mongoose
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date() })
 })
+
+
+
+app.get("/api/seed", async (req, res) => {
+  try {
+    await seedDatabase();
+    res.send("Database seeded successfully!");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Seeding failed");
+  }
+});
+
 
 // Routes
 app.use("/api/products", productRoutes)

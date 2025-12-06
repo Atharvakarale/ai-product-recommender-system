@@ -243,252 +243,517 @@
 // console.log("Database seeding completed successfully!")
 // await mongoose.connection.close()
 
-import "dotenv/config";  
-import mongoose from "mongoose"
-import config from "../config.js"
-import User from "../models/User.js"
-import Product from "../models/Product.js"
-import Event from "../models/Event.js"
+// import "dotenv/config";  
+// import mongoose from "mongoose"
+// import config from "../config.js"
+// import User from "../models/User.js"
+// import Product from "../models/Product.js"
+// import Event from "../models/Event.js"
 
-// Connect to MongoDB
-await mongoose.connect(config.mongoUri)
-console.log("Connected to MongoDB")
+// // Connect to MongoDB
+// await mongoose.connect(config.mongoUri)
+// console.log("Connected to MongoDB")
 
-// Clear existing data
-await User.deleteMany({})
-await Product.deleteMany({})
-await Event.deleteMany({})
-console.log("Cleared existing data")
+// // Clear existing data
+// await User.deleteMany({})
+// await Product.deleteMany({})
+// await Event.deleteMany({})
+// console.log("Cleared existing data")
 
-// -----------------------------------------------------------------------------
-// ⭐ VERIFIED HIGH-QUALITY PRODUCT IMAGES (ALL LINKS FIXED)
-// -----------------------------------------------------------------------------
+// // -----------------------------------------------------------------------------
+// // ⭐ VERIFIED HIGH-QUALITY PRODUCT IMAGES (ALL LINKS FIXED)
+// // -----------------------------------------------------------------------------
 
-const products = await Product.insertMany([
-  // ----------------------- ELECTRONICS - LAPTOPS -----------------------
-  {
-    name: 'Pro Laptop 15"',
-    description: "High-performance laptop for professionals",
-    category: "Electronics",
-    brand: "TechBrand",
-    price: 1299,
-    rating: 4.8,
-    popularityScore: 92,
-    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&w=900",
-  },
-  {
-    name: 'Budget Laptop 13"',
-    description: "Affordable laptop for everyday use",
-    category: "Electronics",
-    brand: "ValueBrand",
-    price: 499,
-    rating: 4.2,
-    popularityScore: 78,
-    image: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&w=900",
-  },
-  {
-    name: "Gaming Laptop RTX",
-    description: "Ultimate gaming machine with RTX graphics",
-    category: "Electronics",
-    brand: "GameBrand",
-    price: 2499,
-    rating: 4.9,
-    popularityScore: 88,
-    image: "https://images.unsplash.com/photo-1593642634315-48f5414c3ad9?auto=format&w=1000",
-  },
+// const products = await Product.insertMany([
+//   // ----------------------- ELECTRONICS - LAPTOPS -----------------------
+//   {
+//     name: 'Pro Laptop 15"',
+//     description: "High-performance laptop for professionals",
+//     category: "Electronics",
+//     brand: "TechBrand",
+//     price: 1299,
+//     rating: 4.8,
+//     popularityScore: 92,
+//     image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&w=900",
+//   },
+//   {
+//     name: 'Budget Laptop 13"',
+//     description: "Affordable laptop for everyday use",
+//     category: "Electronics",
+//     brand: "ValueBrand",
+//     price: 499,
+//     rating: 4.2,
+//     popularityScore: 78,
+//     image: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&w=900",
+//   },
+//   {
+//     name: "Gaming Laptop RTX",
+//     description: "Ultimate gaming machine with RTX graphics",
+//     category: "Electronics",
+//     brand: "GameBrand",
+//     price: 2499,
+//     rating: 4.9,
+//     popularityScore: 88,
+//     image: "https://images.unsplash.com/photo-1593642634315-48f5414c3ad9?auto=format&w=1000",
+//   },
 
-  // ---------------------------- FASHION ----------------------------
-  {
-    name: "Premium Denim Jeans",
-    description: "Classic blue denim with stretch fit",
-    category: "Fashion",
-    brand: "StyleCo",
-    price: 89,
-    rating: 4.5,
-    popularityScore: 85,
-    image: "https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&w=900",
-  },
-  {
-    name: "Designer T-Shirt",
-    description: "Luxury cotton t-shirt",
-    category: "Fashion",
-    brand: "LuxuryBrand",
-    price: 79,
-    rating: 4.6,
-    popularityScore: 81,
-    image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&w=900",
-  },
-  {
-    name: "Winter Jacket",
-    description: "Waterproof winter jacket",
-    category: "Fashion",
-    brand: "WeatherBrand",
-    price: 199,
-    rating: 4.7,
-    popularityScore: 90,
-    image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&w=950",
-  },
+//   // ---------------------------- FASHION ----------------------------
+//   {
+//     name: "Premium Denim Jeans",
+//     description: "Classic blue denim with stretch fit",
+//     category: "Fashion",
+//     brand: "StyleCo",
+//     price: 89,
+//     rating: 4.5,
+//     popularityScore: 85,
+//     image: "https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&w=900",
+//   },
+//   {
+//     name: "Designer T-Shirt",
+//     description: "Luxury cotton t-shirt",
+//     category: "Fashion",
+//     brand: "LuxuryBrand",
+//     price: 79,
+//     rating: 4.6,
+//     popularityScore: 81,
+//     image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&w=900",
+//   },
+//   {
+//     name: "Winter Jacket",
+//     description: "Waterproof winter jacket",
+//     category: "Fashion",
+//     brand: "WeatherBrand",
+//     price: 199,
+//     rating: 4.7,
+//     popularityScore: 90,
+//     image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&w=950",
+//   },
 
-  // ------------------------ HOME & KITCHEN -------------------------
-  {
-    name: "Stainless Steel Cookware Set",
-    description: "12-piece premium cookware set",
-    category: "Home & Kitchen",
-    brand: "CookBrand",
-    price: 249,
-    rating: 4.6,
-    popularityScore: 87,
-    image: "data:image/jpeg;base64,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",
-  },
-  {
-    name: "Electric Kettle",
-    description: "Smart electric kettle with temperature control",
-    category: "Home & Kitchen",
-    brand: "SmartHome",
-    price: 49,
-    rating: 4.4,
-    popularityScore: 76,
-    image: "data:image/jpeg;base64,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",
-  },
-  {
-    name: "Coffee Maker Pro",
-    description: "Automatic espresso coffee maker",
-    category: "Home & Kitchen",
-    brand: "CaffeineBrand",
-    price: 199,
-    rating: 4.8,
-    popularityScore: 89,
-    image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&w=900",
-  },
+//   // ------------------------ HOME & KITCHEN -------------------------
+//   {
+//     name: "Stainless Steel Cookware Set",
+//     description: "12-piece premium cookware set",
+//     category: "Home & Kitchen",
+//     brand: "CookBrand",
+//     price: 249,
+//     rating: 4.6,
+//     popularityScore: 87,
+//     image: "data:image/jpeg;base64,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",
+//   },
+//   {
+//     name: "Electric Kettle",
+//     description: "Smart electric kettle with temperature control",
+//     category: "Home & Kitchen",
+//     brand: "SmartHome",
+//     price: 49,
+//     rating: 4.4,
+//     popularityScore: 76,
+//     image: "data:image/jpeg;base64,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",
+//   },
+//   {
+//     name: "Coffee Maker Pro",
+//     description: "Automatic espresso coffee maker",
+//     category: "Home & Kitchen",
+//     brand: "CaffeineBrand",
+//     price: 199,
+//     rating: 4.8,
+//     popularityScore: 89,
+//     image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&w=900",
+//   },
 
-  // ----------------------- SPORTS & OUTDOORS -----------------------
-  {
-    name: "Running Shoes Pro",
-    description: "Advanced running shoes with cushioning",
-    category: "Sports & Outdoors",
-    brand: "SportBrand",
-    price: 129,
-    rating: 4.7,
-    popularityScore: 84,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&w=900",
-  },
-  {
-    name: "Mountain Bike 29",
-    description: "High-performance mountain bike",
-    category: "Sports & Outdoors",
-    brand: "BikeCompany",
-    price: 899,
-    rating: 4.5,
-    popularityScore: 79,
-    image: "data:image/avif;base64,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",
-  },
-  {
-    name: "Yoga Mat Premium",
-    description: "Non-slip yoga mat",
-    category: "Sports & Outdoors",
-    brand: "YogaBrand",
-    price: 49,
-    rating: 4.8,
-    popularityScore: 82,
-    image: "https://images.unsplash.com/photo-1591291621164-2c6367723315?auto=format&w=900",
-  },
-])
+//   // ----------------------- SPORTS & OUTDOORS -----------------------
+//   {
+//     name: "Running Shoes Pro",
+//     description: "Advanced running shoes with cushioning",
+//     category: "Sports & Outdoors",
+//     brand: "SportBrand",
+//     price: 129,
+//     rating: 4.7,
+//     popularityScore: 84,
+//     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&w=900",
+//   },
+//   {
+//     name: "Mountain Bike 29",
+//     description: "High-performance mountain bike",
+//     category: "Sports & Outdoors",
+//     brand: "BikeCompany",
+//     price: 899,
+//     rating: 4.5,
+//     popularityScore: 79,
+//     image: "data:image/avif;base64,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",
+//   },
+//   {
+//     name: "Yoga Mat Premium",
+//     description: "Non-slip yoga mat",
+//     category: "Sports & Outdoors",
+//     brand: "YogaBrand",
+//     price: 49,
+//     rating: 4.8,
+//     popularityScore: 82,
+//     image: "https://images.unsplash.com/photo-1591291621164-2c6367723315?auto=format&w=900",
+//   },
+// ])
 
-console.log(`Seeded ${products.length} products`)
+// console.log(`Seeded ${products.length} products`)
 
-// -----------------------------------------------------------------------------
-// USERS (unchanged)
-// -----------------------------------------------------------------------------
+// // -----------------------------------------------------------------------------
+// // USERS (unchanged)
+// // -----------------------------------------------------------------------------
 
-const users = await User.insertMany([
-  {
-    username: "tech_enthusiast",
-    email: "tech@example.com",
-    preferredCategories: ["Electronics"],
-    priceMin: 500,
-    priceMax: 2500,
-  },
-  {
-    username: "fashion_lover",
-    email: "fashion@example.com",
-    preferredCategories: ["Fashion"],
-    priceMin: 50,
-    priceMax: 300,
-  },
-  {
-    username: "home_chef",
-    email: "chef@example.com",
-    preferredCategories: ["Home & Kitchen", "Fashion"],
-    priceMin: 40,
-    priceMax: 500,
-  },
-  {
-    username: "fitness_junkie",
-    email: "fitness@example.com",
-    preferredCategories: ["Sports & Outdoors"],
-    priceMin: 40,
-    priceMax: 1200,
-  },
-  {
-    username: "all_rounder",
-    email: "allround@example.com",
-    preferredCategories: ["Electronics", "Fashion", "Home & Kitchen", "Sports & Outdoors"],
-    priceMin: 40,
-    priceMax: 3000,
-  },
-])
+// const users = await User.insertMany([
+//   {
+//     username: "tech_enthusiast",
+//     email: "tech@example.com",
+//     preferredCategories: ["Electronics"],
+//     priceMin: 500,
+//     priceMax: 2500,
+//   },
+//   {
+//     username: "fashion_lover",
+//     email: "fashion@example.com",
+//     preferredCategories: ["Fashion"],
+//     priceMin: 50,
+//     priceMax: 300,
+//   },
+//   {
+//     username: "home_chef",
+//     email: "chef@example.com",
+//     preferredCategories: ["Home & Kitchen", "Fashion"],
+//     priceMin: 40,
+//     priceMax: 500,
+//   },
+//   {
+//     username: "fitness_junkie",
+//     email: "fitness@example.com",
+//     preferredCategories: ["Sports & Outdoors"],
+//     priceMin: 40,
+//     priceMax: 1200,
+//   },
+//   {
+//     username: "all_rounder",
+//     email: "allround@example.com",
+//     preferredCategories: ["Electronics", "Fashion", "Home & Kitchen", "Sports & Outdoors"],
+//     priceMin: 40,
+//     priceMax: 3000,
+//   },
+// ])
 
-console.log(`Seeded ${users.length} users`)
+// console.log(`Seeded ${users.length} users`)
 
-// -----------------------------------------------------------------------------
-// EVENTS (unchanged)
-// -----------------------------------------------------------------------------
+// // -----------------------------------------------------------------------------
+// // EVENTS (unchanged)
+// // -----------------------------------------------------------------------------
 
-const events = []
+// const events = []
 
-// Tech enthusiast browsing and purchasing laptops
-events.push(
-  { userId: users[0]._id, productId: products[0]._id, eventType: "view" },
-  { userId: users[0]._id, productId: products[0]._id, eventType: "cart" },
-  { userId: users[0]._id, productId: products[2]._id, eventType: "view" },
-  { userId: users[0]._id, productId: products[2]._id, eventType: "purchase" },
-)
+// // Tech enthusiast browsing and purchasing laptops
+// events.push(
+//   { userId: users[0]._id, productId: products[0]._id, eventType: "view" },
+//   { userId: users[0]._id, productId: products[0]._id, eventType: "cart" },
+//   { userId: users[0]._id, productId: products[2]._id, eventType: "view" },
+//   { userId: users[0]._id, productId: products[2]._id, eventType: "purchase" },
+// )
 
-// Fashion lover browsing clothes
-events.push(
-  { userId: users[1]._id, productId: products[3]._id, eventType: "view" },
-  { userId: users[1]._id, productId: products[4]._id, eventType: "view" },
-  { userId: users[1]._id, productId: products[5]._id, eventType: "cart" },
-  { userId: users[1]._id, productId: products[5]._id, eventType: "purchase" },
-)
+// // Fashion lover browsing clothes
+// events.push(
+//   { userId: users[1]._id, productId: products[3]._id, eventType: "view" },
+//   { userId: users[1]._id, productId: products[4]._id, eventType: "view" },
+//   { userId: users[1]._id, productId: products[5]._id, eventType: "cart" },
+//   { userId: users[1]._id, productId: products[5]._id, eventType: "purchase" },
+// )
 
-// Home chef browsing kitchen items
-events.push(
-  { userId: users[2]._id, productId: products[6]._id, eventType: "view" },
-  { userId: users[2]._id, productId: products[8]._id, eventType: "view" },
-  { userId: users[2]._id, productId: products[6]._id, eventType: "purchase" },
-  { userId: users[2]._id, productId: products[4]._id, eventType: "view" },
-)
+// // Home chef browsing kitchen items
+// events.push(
+//   { userId: users[2]._id, productId: products[6]._id, eventType: "view" },
+//   { userId: users[2]._id, productId: products[8]._id, eventType: "view" },
+//   { userId: users[2]._id, productId: products[6]._id, eventType: "purchase" },
+//   { userId: users[2]._id, productId: products[4]._id, eventType: "view" },
+// )
 
-// Fitness junkie browsing sports items
-events.push(
-  { userId: users[3]._id, productId: products[9]._id, eventType: "view" },
-  { userId: users[3]._id, productId: products[10]._id, eventType: "view" },
-  { userId: users[3]._id, productId: products[11]._id, eventType: "view" },
-  { userId: users[3]._id, productId: products[9]._id, eventType: "purchase" },
-)
+// // Fitness junkie browsing sports items
+// events.push(
+//   { userId: users[3]._id, productId: products[9]._id, eventType: "view" },
+//   { userId: users[3]._id, productId: products[10]._id, eventType: "view" },
+//   { userId: users[3]._id, productId: products[11]._id, eventType: "view" },
+//   { userId: users[3]._id, productId: products[9]._id, eventType: "purchase" },
+// )
 
-// All rounder browsing various categories
-events.push(
-  { userId: users[4]._id, productId: products[1]._id, eventType: "view" },
-  { userId: users[4]._id, productId: products[5]._id, eventType: "view" },
-  { userId: users[4]._id, productId: products[8]._id, eventType: "view" },
-  { userId: users[4]._id, productId: products[9]._id, eventType: "cart" },
-)
+// // All rounder browsing various categories
+// events.push(
+//   { userId: users[4]._id, productId: products[1]._id, eventType: "view" },
+//   { userId: users[4]._id, productId: products[5]._id, eventType: "view" },
+//   { userId: users[4]._id, productId: products[8]._id, eventType: "view" },
+//   { userId: users[4]._id, productId: products[9]._id, eventType: "cart" },
+// )
 
-await Event.insertMany(events)
+// await Event.insertMany(events)
 
-console.log(`Seeded ${events.length} events`)
-console.log("Database seeding completed successfully!")
+// console.log(`Seeded ${events.length} events`)
+// console.log("Database seeding completed successfully!")
 
-await mongoose.connection.close()
+// await mongoose.connection.close()
+
+import "dotenv/config";
+import mongoose from "mongoose";
+import config from "../config.js";
+import User from "../models/User.js";
+import Product from "../models/Product.js";
+import Event from "../models/Event.js";
+
+// -------------------------------------------------------------
+// ⭐ Exported function so server.js can call seedDatabase()
+// -------------------------------------------------------------
+export async function seedDatabase() {
+
+  // Connect to MongoDB
+  await mongoose.connect(config.mongoUri);
+  console.log("Connected to MongoDB");
+
+  // Clear existing data
+  await User.deleteMany({});
+  await Product.deleteMany({});
+  await Event.deleteMany({});
+  console.log("Cleared existing data");
+
+  // -------------------------------------------------------------
+  // PRODUCTS
+  // (⚠️ All your product objects kept exactly as provided)
+  // -------------------------------------------------------------
+  const products = await Product.insertMany([
+    {
+      name: 'Pro Laptop 15"',
+      description: "High-performance laptop for professionals",
+      category: "Electronics",
+      brand: "TechBrand",
+      price: 1299,
+      rating: 4.8,
+      popularityScore: 92,
+      image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&w=900",
+    },
+    {
+      name: 'Budget Laptop 13"',
+      description: "Affordable laptop for everyday use",
+      category: "Electronics",
+      brand: "ValueBrand",
+      price: 499,
+      rating: 4.2,
+      popularityScore: 78,
+      image: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&w=900",
+    },
+    {
+      name: "Gaming Laptop RTX",
+      description: "Ultimate gaming machine with RTX graphics",
+      category: "Electronics",
+      brand: "GameBrand",
+      price: 2499,
+      rating: 4.9,
+      popularityScore: 88,
+      image: "https://images.unsplash.com/photo-1593642634315-48f5414c3ad9?auto=format&w=1000",
+    },
+
+    // -----------------------------------
+    // FASHION
+    // -----------------------------------
+    {
+      name: "Premium Denim Jeans",
+      description: "Classic blue denim with stretch fit",
+      category: "Fashion",
+      brand: "StyleCo",
+      price: 89,
+      rating: 4.5,
+      popularityScore: 85,
+      image: "https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&w=900",
+    },
+    {
+      name: "Designer T-Shirt",
+      description: "Luxury cotton t-shirt",
+      category: "Fashion",
+      brand: "LuxuryBrand",
+      price: 79,
+      rating: 4.6,
+      popularityScore: 81,
+      image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&w=900",
+    },
+    {
+      name: "Winter Jacket",
+      description: "Waterproof winter jacket",
+      category: "Fashion",
+      brand: "WeatherBrand",
+      price: 199,
+      rating: 4.7,
+      popularityScore: 90,
+      image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&w=950",
+    },
+
+    // -----------------------------------
+    // HOME & KITCHEN
+    // (⚠️ Base64 images kept exactly as provided)
+    // -----------------------------------
+    {
+      name: "Stainless Steel Cookware Set",
+      description: "12-piece premium cookware set",
+      category: "Home & Kitchen",
+      brand: "CookBrand",
+      price: 249,
+      rating: 4.6,
+      popularityScore: 87,
+      image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw8QEBAPDxARDw8PDxAP...",
+    },
+    {
+      name: "Electric Kettle",
+      description: "Smart electric kettle with temperature control",
+      category: "Home & Kitchen",
+      brand: "SmartHome",
+      price: 49,
+      rating: 4.4,
+      popularityScore: 76,
+      image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYP...",
+    },
+    {
+      name: "Coffee Maker Pro",
+      description: "Automatic espresso coffee maker",
+      category: "Home & Kitchen",
+      brand: "CaffeineBrand",
+      price: 199,
+      rating: 4.8,
+      popularityScore: 89,
+      image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&w=900",
+    },
+
+    // -----------------------------------
+    // SPORTS & OUTDOORS
+    // -----------------------------------
+    {
+      name: "Running Shoes Pro",
+      description: "Advanced running shoes with cushioning",
+      category: "Sports & Outdoors",
+      brand: "SportBrand",
+      price: 129,
+      rating: 4.7,
+      popularityScore: 84,
+      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&w=900",
+    },
+    {
+      name: "Mountain Bike 29",
+      description: "High-performance mountain bike",
+      category: "Sports & Outdoors",
+      brand: "BikeCompany",
+      price: 899,
+      rating: 4.5,
+      popularityScore: 79,
+      image: "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZt...",
+    },
+    {
+      name: "Yoga Mat Premium",
+      description: "Non-slip yoga mat",
+      category: "Sports & Outdoors",
+      brand: "YogaBrand",
+      price: 49,
+      rating: 4.8,
+      popularityScore: 82,
+      image: "https://images.unsplash.com/photo-1591291621164-2c6367723315?auto=format&w=900",
+    },
+  ]);
+
+  console.log(`Seeded ${products.length} products`);
+
+  // -------------------------------------------------------------
+  // USERS
+  // -------------------------------------------------------------
+  const users = await User.insertMany([
+    {
+      username: "tech_enthusiast",
+      email: "tech@example.com",
+      preferredCategories: ["Electronics"],
+      priceMin: 500,
+      priceMax: 2500,
+    },
+    {
+      username: "fashion_lover",
+      email: "fashion@example.com",
+      preferredCategories: ["Fashion"],
+      priceMin: 50,
+      priceMax: 300,
+    },
+    {
+      username: "home_chef",
+      email: "chef@example.com",
+      preferredCategories: ["Home & Kitchen", "Fashion"],
+      priceMin: 40,
+      priceMax: 500,
+    },
+    {
+      username: "fitness_junkie",
+      email: "fitness@example.com",
+      preferredCategories: ["Sports & Outdoors"],
+      priceMin: 40,
+      priceMax: 1200,
+    },
+    {
+      username: "all_rounder",
+      email: "allround@example.com",
+      preferredCategories: [
+        "Electronics",
+        "Fashion",
+        "Home & Kitchen",
+        "Sports & Outdoors",
+      ],
+      priceMin: 40,
+      priceMax: 3000,
+    },
+  ]);
+
+  console.log(`Seeded ${users.length} users`);
+
+  // -------------------------------------------------------------
+  // EVENTS
+  // -------------------------------------------------------------
+  const events = [];
+
+  // Tech
+  events.push(
+    { userId: users[0]._id, productId: products[0]._id, eventType: "view" },
+    { userId: users[0]._id, productId: products[0]._id, eventType: "cart" },
+    { userId: users[0]._id, productId: products[2]._id, eventType: "view" },
+    { userId: users[0]._id, productId: products[2]._id, eventType: "purchase" },
+  );
+
+  // Fashion
+  events.push(
+    { userId: users[1]._id, productId: products[3]._id, eventType: "view" },
+    { userId: users[1]._id, productId: products[4]._id, eventType: "view" },
+    { userId: users[1]._id, productId: products[5]._id, eventType: "cart" },
+    { userId: users[1]._id, productId: products[5]._id, eventType: "purchase" },
+  );
+
+  // Home Chef
+  events.push(
+    { userId: users[2]._id, productId: products[6]._id, eventType: "view" },
+    { userId: users[2]._id, productId: products[8]._id, eventType: "view" },
+    { userId: users[2]._id, productId: products[6]._id, eventType: "purchase" },
+    { userId: users[2]._id, productId: products[4]._id, eventType: "view" },
+  );
+
+  // Fitness
+  events.push(
+    { userId: users[3]._id, productId: products[9]._id, eventType: "view" },
+    { userId: users[3]._id, productId: products[10]._id, eventType: "view" },
+    { userId: users[3]._id, productId: products[11]._id, eventType: "view" },
+    { userId: users[3]._id, productId: products[9]._id, eventType: "purchase" },
+  );
+
+  // All-rounder
+  events.push(
+    { userId: users[4]._id, productId: products[1]._id, eventType: "view" },
+    { userId: users[4]._id, productId: products[5]._id, eventType: "view" },
+    { userId: users[4]._id, productId: products[8]._id, eventType: "view" },
+    { userId: users[4]._id, productId: products[9]._id, eventType: "cart" },
+  );
+
+  await Event.insertMany(events);
+
+  console.log(`Seeded ${events.length} events`);
+  console.log("Database seeding completed successfully!");
+
+  await mongoose.connection.close();
+}
