@@ -856,7 +856,7 @@ async function seedDatabase() {
       price: 249,
       rating: 4.6,
       popularityScore: 87,
-      image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+      image: "https://unsplash.com/photos/a-group-of-pots-and-pans-sitting-on-a-table-zkDCXsHbWXg",
     },
     {
       name: "Electric Kettle",
@@ -866,7 +866,7 @@ async function seedDatabase() {
       price: 49,
       rating: 4.4,
       popularityScore: 76,
-      image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+      image: "https://unsplash.com/photos/grey-stainless-steel-electric-kettle-mGlfn5uQH80",
     },
     {
       name: "Coffee Maker Pro",
@@ -898,7 +898,7 @@ async function seedDatabase() {
       price: 899,
       rating: 4.5,
       popularityScore: 79,
-      image: "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAA...",
+      image: "https://unsplash.com/photos/black-hardtail-mountain-bike-CfhwQ2ZTaRY",
     },
     {
       name: "Yoga Mat Premium",
