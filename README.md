@@ -377,8 +377,6 @@ VITE_API_URL=
 * Run seeder again
 * Ensure user has valid preferred categories
 
----
 
-# 📄 License
 
 
