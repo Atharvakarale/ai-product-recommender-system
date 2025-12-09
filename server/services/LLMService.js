@@ -1,72 +1,48 @@
-// LLMService.js
-// REAL OpenAI explanation generator (NO MOCK FALLBACK)
+// LLMService.js — Gemini Version
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-import OpenAI from "openai";
+const apiKey = process.env.GEMINI_API_KEY;
 
-if (!process.env.OPENAI_API_KEY) {
-  console.error("❌ Missing OPENAI_API_KEY in environment variables.");
-  throw new Error("OPENAI_API_KEY is required to run LLM explanations.");
+if (!apiKey) {
+  console.error("❌ Missing GEMINI_API_KEY in .env file");
 }
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(apiKey);
 
 // ---------------------------------------------------------
-// ALWAYS USE REAL OPENAI — NO FALLBACK
+// MAIN FUNCTION — Calls Gemini 1.5 Flash
 // ---------------------------------------------------------
 async function generateExplanation(userSummary, product, factors, confidence) {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = `
-You are an AI assistant that explains WHY a product is recommended.
-
-USER PROFILE:
+    const prompt = `
+User Profile Summary:
 ${userSummary}
 
-PRODUCT DETAILS:
-Name: ${product.name}
-Category: ${product.category}
-Price: $${product.price}
+Product:
+${product.name} — Category: ${product.category}, Price: $${product.price}
 
-MATCHING FACTORS:
+Scoring Factors (0–1 scale):
 ${JSON.stringify(factors, null, 2)}
 
-CONFIDENCE LEVEL: ${confidence}
+Confidence Level: ${confidence}
 
 TASK:
-Write a friendly, natural, concise 1–2 sentence explanation describing
-*why this product is a good match* for the user, based on their preferences,
-behavior, product popularity, rating, or relevance.
+Write a friendly, simple, 1–2 sentence explanation of WHY this product was recommended for the user.
+Avoid technical details, make it personalized, and reference the user’s interests.
+`;
 
-Do NOT repeat product details already given.
-Do NOT summarize—the output must be a clean explanation only.
-  `;
+    const result = await model.generateContent(prompt);
+    const explanation = result.response.text().trim();
 
-  try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 80,
-      temperature: 0.6,
-    });
-
-    const explanation = response.choices?.[0]?.message?.content?.trim();
-
-    if (!explanation) {
-      throw new Error("LLM returned an empty explanation");
-    }
-
-    return explanation;
-
-  } catch (err) {
-    console.error("❌ OpenAI LLM Error:", err);
-    throw err; // NO FALLBACK → break so you know it failed
+    return explanation || "Recommended because it matches your interests.";
+  } catch (error) {
+    console.error("Gemini LLM error:", error);
+    return "Recommended because it matches your interests.";
   }
 }
 
-// ---------------------------------------------------------
-// EXPORT CORRECTLY
-// ---------------------------------------------------------
 export default {
   generateExplanation,
 };
