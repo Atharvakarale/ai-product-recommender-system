@@ -1,42 +1,67 @@
 // LLMService.js
-// Generates natural-language explanations for recommended products
+// REAL OpenAI explanation generator (NO MOCK FALLBACK)
 
-// ---------------------------------------------------------
-// MAIN EXPLANATION FUNCTION
-// ---------------------------------------------------------
-async function generateExplanation(userSummary, product, factors, confidence) {
-  try {
-    return generateMockExplanation(userSummary, product, factors, confidence);
-  } catch (err) {
-    console.error("LLMService error:", err);
-    return generateMockExplanation(userSummary, product, factors, confidence);
-  }
+import OpenAI from "openai";
+
+if (!process.env.OPENAI_API_KEY) {
+  console.error("❌ Missing OPENAI_API_KEY in environment variables.");
+  throw new Error("OPENAI_API_KEY is required to run LLM explanations.");
 }
 
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 // ---------------------------------------------------------
-// MOCK EXPLANATION (ALWAYS SAFE)
+// ALWAYS USE REAL OPENAI — NO FALLBACK
 // ---------------------------------------------------------
-function generateMockExplanation(userSummary, product, factors, confidence) {
-  const { categorySimilarity, behaviorScore, popularityScore, recencyScore } = factors;
+async function generateExplanation(userSummary, product, factors, confidence) {
 
-  const reasons = [];
+  const prompt = `
+You are an AI assistant that explains WHY a product is recommended.
 
-  if (categorySimilarity > 0.6)
-    reasons.push("matches your preferred categories");
+USER PROFILE:
+${userSummary}
 
-  if (behaviorScore > 0.4)
-    reasons.push("aligns with products you've interacted with recently");
+PRODUCT DETAILS:
+Name: ${product.name}
+Category: ${product.category}
+Price: $${product.price}
 
-  if (popularityScore > 0.7)
-    reasons.push("is a popular and well-liked product");
+MATCHING FACTORS:
+${JSON.stringify(factors, null, 2)}
 
-  if (recencyScore > 0.5)
-    reasons.push("is one of the more recent products available");
+CONFIDENCE LEVEL: ${confidence}
 
-  const reasonText =
-    reasons.length > 0 ? reasons.join(" and ") : "fits your current shopping patterns";
+TASK:
+Write a friendly, natural, concise 1–2 sentence explanation describing
+*why this product is a good match* for the user, based on their preferences,
+behavior, product popularity, rating, or relevance.
 
-  return `We recommend "${product.name}" because it ${reasonText}. This ${product.category} item is a strong match for your interests. (Confidence: ${confidence})`;
+Do NOT repeat product details already given.
+Do NOT summarize—the output must be a clean explanation only.
+  `;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 80,
+      temperature: 0.6,
+    });
+
+    const explanation = response.choices?.[0]?.message?.content?.trim();
+
+    if (!explanation) {
+      throw new Error("LLM returned an empty explanation");
+    }
+
+    return explanation;
+
+  } catch (err) {
+    console.error("❌ OpenAI LLM Error:", err);
+    throw err; // NO FALLBACK → break so you know it failed
+  }
 }
 
 // ---------------------------------------------------------
