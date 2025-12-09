@@ -1,45 +1,57 @@
-// LLMService.js — Gemini Version
+// LLMService.js – Gemini-powered explanations
+
+import dotenv from "dotenv";
+dotenv.config();
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const apiKey = process.env.GEMINI_API_KEY;
-
-if (!apiKey) {
-  console.error("❌ Missing GEMINI_API_KEY in .env file");
-}
-
-const genAI = new GoogleGenerativeAI(apiKey);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 // ---------------------------------------------------------
-// MAIN FUNCTION — Calls Gemini 1.5 Flash
+// MAIN EXPLANATION GENERATOR
 // ---------------------------------------------------------
 async function generateExplanation(userSummary, product, factors, confidence) {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
     const prompt = `
-User Profile Summary:
+You are an AI product recommendation engine. 
+Generate a UNIQUE 2–3 sentence explanation for WHY this product is recommended 
+to this user based on the scoring factors.
+
+Avoid generic text like "matches your interest". Be specific.
+
+USER PROFILE SUMMARY:
 ${userSummary}
 
-Product:
-${product.name} — Category: ${product.category}, Price: $${product.price}
+PRODUCT DETAILS:
+Name: ${product.name}
+Category: ${product.category}
+Price: $${product.price}
+Description: ${product.description}
+Brand: ${product.brand}
 
-Scoring Factors (0–1 scale):
-${JSON.stringify(factors, null, 2)}
+SCORING FACTORS (0–1 scale):
+- Category Match: ${factors.categorySimilarity}
+- Behavior Score: ${factors.behaviorScore}
+- Popularity Score: ${factors.popularityScore}
+- Recency Score: ${factors.recencyScore}
 
-Confidence Level: ${confidence}
+CONFIDENCE LEVEL: ${confidence}
 
-TASK:
-Write a friendly, simple, 1–2 sentence explanation of WHY this product was recommended for the user.
-Avoid technical details, make it personalized, and reference the user’s interests.
+Generate:
+1. A friendly natural explanation.
+2. Mention at least *one specific factor* influencing the recommendation.
+3. Do NOT repeat the same explanation for different products.
 `;
 
     const result = await model.generateContent(prompt);
-    const explanation = result.response.text().trim();
+    const response = await result.response.text();
 
-    return explanation || "Recommended because it matches your interests.";
+    return response.trim();
   } catch (error) {
     console.error("Gemini LLM error:", error);
-    return "Recommended because it matches your interests.";
+
+    return `This product is recommended based on your interests, price range, and browsing activity. (Fallback explanation)`;
   }
 }
 
