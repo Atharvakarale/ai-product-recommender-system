@@ -1,15 +1,17 @@
-// LLMService.js – Gemini-powered explanations
+// LLMService.js – Gemini 2.5 Flash explanations
 
 import dotenv from "dotenv";
 dotenv.config();
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Load API key
+// Initialize client with API key
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Use stable text model
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+// Use officially supported Gemini 2.5 Flash model
+const model = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash"   // ✅ correct model name
+});
 
 // ---------------------------------------------------------
 // MAIN FUNCTION
@@ -17,34 +19,32 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 export async function generateExplanation(userSummary, product, factors, confidence) {
   try {
     const prompt = `
-You are an AI recommender system.
-Generate a unique, non-repetitive 2–3 sentence explanation for WHY this product is recommended.
+You are an AI product recommendation engine.
+Generate a unique 2–3 sentence explanation for WHY this product is recommended.
 
-Be specific. Reference at least ONE of the numeric factors.
+Avoid generic phrases like “matches your interests.”
+Be specific. Reference at least one numeric factor.
 
 USER SUMMARY:
 ${userSummary}
 
-PRODUCT:
+PRODUCT DETAILS:
 - Name: ${product.name}
 - Category: ${product.category}
 - Price: $${product.price}
 - Description: ${product.description}
 
-FACTORS (0–1 scale):
+SCORING FACTORS (0–1 scale):
 - Category Match: ${factors.categorySimilarity}
 - Behavior Match: ${factors.behaviorScore}
 - Popularity: ${factors.popularityScore}
 - Recency: ${factors.recencyScore}
 
-CONFIDENCE: ${confidence}
+CONFIDENCE LEVEL: ${confidence}
 `;
 
-    // ⛔ Old syntax (does NOT work reliably):
-    // const result = await model.generateContent(prompt);
-
-    // ✅ Correct updated Gemini syntax
-    const result = await model.generateContent({
+    // Gemini v1 content API format (required for 2.5 models)
+    const response = await model.generateContent({
       contents: [
         {
           role: "user",
@@ -53,17 +53,22 @@ CONFIDENCE: ${confidence}
       ],
     });
 
-    const text = result.response.text();
+    const text = response.response.text();
 
-    if (!text || text.trim().length === 0) throw new Error("Empty response");
+    if (!text || text.trim().length === 0) {
+      throw new Error("Gemini returned empty response");
+    }
 
     return text.trim();
   } catch (error) {
     console.error("Gemini LLM error:", error);
-    return "This recommendation was generated using your browsing behavior, category interests, and product popularity. (Fallback explanation)";
+
+    // fallback
+    return (
+      "This product is recommended based on a combination of your browsing behavior, " +
+      "category preferences, and product popularity. (Fallback explanation)"
+    );
   }
 }
 
 export default { generateExplanation };
-
-
