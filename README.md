@@ -293,21 +293,6 @@ VITE_API_URL=
 
 ---
 
-# 🐞 Troubleshooting
 
-(unchanged)
 
----
 
-# 📜 License
-
-MIT License
-
----
-
-If you want, I can also:
-✅ Generate a **project logo**
-✅ Add **badges** (build, license, tech stack)
-✅ Format this README with better visuals
-
-Just tell me!
