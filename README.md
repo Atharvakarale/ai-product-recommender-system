@@ -8,7 +8,7 @@ A full-stack AI-driven product recommendation system that analyzes user behavior
 
 ## 🎥 Demo Video  
 Watch the full demo here:  
-👉 https://drive.google.com/file/d/1D0pRcszIMeCBIOcieu-1LItdqTC1xF6J/view?usp=sharing
+👉 https://drive.google.com/file/d/1q7HUbBg-nJi42YxQ_hA8yX0bnCfzg_9e/view?usp=sharing
 
 
 ---
